@@ -9,6 +9,8 @@ const Layout = ({
   modal: React.ReactNode;
   login: React.ReactNode;
 }>) => {
+
+  
   const isLoggedIn = true;
 
   if (!isLoggedIn) return login;
