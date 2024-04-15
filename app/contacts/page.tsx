@@ -2,6 +2,7 @@ import Search from "@/components/ui/Search";
 import ContainerBox from "@/components/layout/ContainerBox";
 import Header from "@/components/layout/Header";
 import React, { Suspense } from "react";
+import ContactsGallary from '@/components/layout/ContactsGallary';
 
 const ContactsPage = ({
   searchParams,
@@ -27,7 +28,7 @@ const ContactsPage = ({
           key={query + currentPage}
           fallback={"<InvoicesTableSkeleton /> Insert skeleton"}
         >
-          Contacts map
+          <ContactsGallary query={query} currentPage={currentPage} />
         </Suspense>
       </ContainerBox>
     </>

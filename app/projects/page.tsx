@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import Search from "@/components/ui/Search";
 import ContainerBox from "@/components/layout/ContainerBox";
 import Header from "@/components/layout/Header";
-import ProjectsGallary from "@/components/projects/ProjectsGallary";
+import ProjectsGallary from "@/components/layout/ProjectsGallary";
 
 const ProjectsPage = ({
   searchParams,
