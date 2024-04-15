@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import NavBar from "./_components/layout/NavBar";
+import NavBar from "../components/layout/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,12 +36,10 @@ export default function RootLayout({
   children: React.ReactNode;
   modal: React.ReactNode;
 }>) {
-
- 
   return (
     <html lang="ru">
-      <body className='h-dvh'>
-        <main className='h-[91%]'>
+      <body className="h-dvh">
+        <main className="px-2 pb-2 space-y-2">
           {children}
           {modal}
         </main>
