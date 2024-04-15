@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import Search from "@/components/inputs/Search";
+import Search from "@/components/ui/Search";
 import ContainerBox from "@/components/layout/ContainerBox";
 import Header from "@/components/layout/Header";
 import ProjectsGallary from "@/components/projects/ProjectsGallary";

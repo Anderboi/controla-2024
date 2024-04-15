@@ -1,4 +1,5 @@
-import React from 'react'
+import React from "react";
+import getProjectsByTitle from "@/actions/projects/getProjectsByTitle";
 
 const ProjectsGallary = async ({
   query,
@@ -7,8 +8,15 @@ const ProjectsGallary = async ({
   query: string;
   currentPage: number;
 }) => {
-  // const invoices = await fetchFilteredInvoices(query, currentPage); //TODO Add supabase fetch
-  return <div>ProjectsGallary</div>;
+  const projects = await getProjectsByTitle(query);
+
+  return (
+    <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {projects.map((project) => (
+        <div>{project.address_street}</div>
+      ))}
+    </section>
+  );
 };
 
-export default ProjectsGallary
+export default ProjectsGallary;

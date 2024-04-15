@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Input } from "../ui/input";
+import { Input } from "./input";
 import { twMerge } from "tailwind-merge";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
