@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Comfortaa, IBM_Plex_Sans, Rubik } from "next/font/google";
+
 import "./globals.css";
 import NavBar from "../components/layout/NavBar";
+import { twMerge } from "tailwind-merge";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Rubik({ subsets: ["cyrillic"] });
 
 export const metadata: Metadata = {
   title: "Controla",
@@ -38,7 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className="h-dvh">
+      <body className={twMerge("h-dvh", font.className)}>
         <main className="px-2 pb-2 space-y-2">
           {children}
           {modal}

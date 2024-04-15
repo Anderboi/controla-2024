@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import Search from "@/components/inputs/Search";
 import ContainerBox from "@/components/layout/ContainerBox";
 import Header from "@/components/layout/Header";
+import ProjectsGallary from "@/components/projects/ProjectsGallary";
 
 const ProjectsPage = ({
   searchParams,
@@ -28,7 +29,7 @@ const ProjectsPage = ({
           key={query + currentPage}
           fallback={"<InvoicesTableSkeleton /> Insert skeleton"}
         >
-          Projects map
+          <ProjectsGallary query={query} currentPage={currentPage} />
         </Suspense>
       </ContainerBox>
     </>
