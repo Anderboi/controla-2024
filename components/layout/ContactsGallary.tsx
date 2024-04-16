@@ -1,5 +1,5 @@
-import React from 'react'
-import getContactsByTitle from '@/actions/contacts/getContactsByTitle';
+import { getContactsByTitle } from "@/lib/supabase/supabase";
+import React from "react";
 
 const ContactsGallary = async ({
   query,
@@ -19,4 +19,4 @@ const ContactsGallary = async ({
   );
 };
 
-export default ContactsGallary
+export default ContactsGallary;

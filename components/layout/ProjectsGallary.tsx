@@ -1,5 +1,5 @@
+import { getProjectsByTitle } from '@/lib/supabase/supabase';
 import React from "react";
-import getProjectsByTitle from "@/actions/projects/getProjectsByTitle";
 
 const ProjectsGallary = async ({
   query,
