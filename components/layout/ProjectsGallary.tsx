@@ -1,5 +1,15 @@
-import { getProjectsByTitle } from '@/lib/supabase/supabase';
+import { getProjectsByTitle } from "@/lib/supabase/supabase";
 import React from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardTitle,
+} from "../ui/card";
+import Link from "next/link";
+import Image from "next/image";
+import { formatDate } from "@/lib/utils";
 
 const ProjectsGallary = async ({
   query,
@@ -13,7 +23,39 @@ const ProjectsGallary = async ({
   return (
     <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {projects.map((project) => (
-        <div>{project.address_street}</div>
+        <Card key={project.project_id} className="overflow-hidden !p-0">
+          <Link
+            href={`/projects/${project.project_id} `}
+            key={project.project_id}
+          >
+            <CardContent
+              className="
+                aspect-video 
+                object-cover 
+                h-[180px] 
+                w-full 
+                overflow-hidden 
+                bg-accent-dark
+                p-0
+                "
+            >
+              {/* <Image
+                alt="Project cover"
+                src="https://picsum.photos/200"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                objectFit="cover"
+                fill
+                className="w-full object-cover"
+              /> */}
+            </CardContent>
+            <CardFooter className="block p-4">
+              <CardTitle>{project.address_street}</CardTitle>
+              <CardDescription>
+                {formatDate(project.created_at)}
+              </CardDescription>
+            </CardFooter>
+          </Link>
+        </Card>
       ))}
     </section>
   );

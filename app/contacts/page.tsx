@@ -2,7 +2,7 @@ import Search from "@/components/ui/Search";
 import ContainerBox from "@/components/layout/ContainerBox";
 import Header from "@/components/layout/Header";
 import React, { Suspense } from "react";
-import ContactsGallary from '@/components/layout/ContactsGallary';
+import ContactsGallary from "@/components/layout/ContactsGallary";
 
 const ContactsPage = ({
   searchParams,
@@ -21,7 +21,7 @@ const ContactsPage = ({
       <ContainerBox
         className="
           h-full
-          space-y-4
+          space-y-4 grow
           "
       >
         <Suspense

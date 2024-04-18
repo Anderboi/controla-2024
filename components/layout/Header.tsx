@@ -4,6 +4,9 @@ import { twMerge } from "tailwind-merge";
 
 import Image from "next/image";
 import ContainerBox from './ContainerBox';
+import { useRouter } from 'next/navigation';
+import { Button } from '../ui/button';
+import { ChevronLeft } from 'lucide-react';
 
 // import HeaderNavBlock from "./HeaderNavBlock";
 
@@ -25,14 +28,19 @@ const Header = ({
   startDate,
   adjustableButton,
 }: HeaderProps) => {
+    const router = useRouter();
+
   return (
-    <ContainerBox
+    <div
       className={twMerge(
         `
+        bg-secondary-bg-light
+        dark:bg-secondary-bg-dark
+        rounded-b-lg
+        sm:rounded-lg
         p-4
         pt-12
         md:pt-4
-        //relative
         flex
         flex-col
         gap-6
@@ -40,7 +48,6 @@ const Header = ({
         h-fit
         w-full
         items-center
-        max-sm:!rounded-t-none
         `,
         className
       )}
@@ -53,6 +60,14 @@ const Header = ({
           "
       >
         {/*//? left button block */}
+        <Button
+        
+          size={"smallIcon"}
+          variant={"ghost"}
+          onClick={() => router.back()}
+        >
+          <ChevronLeft fontSize={24} />
+        </Button>
         {/* <HeaderNavBlock /> */}
         {/*//? right button block */}
         {/* {adjustableButton} */}
@@ -69,8 +84,8 @@ const Header = ({
           className="
           text-left
           text-xs
-          text-primary-text-light/90
-          dark:text-primary-text-dark/90
+          text-secondary-text-light
+          dark:text-secondary-text-dark
           md:text-base
           "
         >
@@ -113,7 +128,7 @@ const Header = ({
           {startDate && Date.parse(startDate)}
         </span>
       </section>
-    </ContainerBox>
+    </div>
   );
 };
 
