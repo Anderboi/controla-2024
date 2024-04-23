@@ -8,10 +8,10 @@ const Layout = ({
   modal: React.ReactNode;
 }>) => {
   return (
-    <>
+    <section className='space-y-2'>
       {children}
       {modal}
-    </>
+    </section>
   );
 };
 

@@ -26,7 +26,7 @@ const Search = ({ className }: { className?: string }) => {
       type="search"
       placeholder="Найти ..."
       className={twMerge(
-        "text-primary-text-light dark:text-primary-text-dark py-1 h-fit",
+        "text-primary-text-light dark:text-primary-text-dark",
         className
       )}
       onChange={(e) => handleSearch(e.target.value)}

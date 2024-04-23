@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { routes, secondaryRoutes } from "@/lib/navRoutes";
 import { usePathname } from "next/navigation";
-import { Button } from '../ui/button';
-import { Plus } from 'lucide-react';
+import { Button } from "../ui/button";
+import { Plus } from "lucide-react";
 
 const NavBar = () => {
   const path = usePathname();
@@ -15,7 +15,7 @@ const NavBar = () => {
         z-10
         flex
 
-        h-16
+        h-20
         w-full
 
         justify-around
@@ -29,7 +29,7 @@ const NavBar = () => {
         sm:hidden
 
         fixed
-        bottom-0
+        -bottom-1.5
       "
     >
       {routes.map((route, index) => (
@@ -41,12 +41,14 @@ const NavBar = () => {
           {path === route.href ? route.activeIcon : route.icon}
         </Link>
       ))}
-      <Button variant={"default"} size={"sm"}>
-        <Plus
-          size={24}
-          className="text-primary-text-light dark:text-primary-text-light"
-        />
-      </Button>
+      <Link href={"/createproject"}>
+        <Button variant={"default"} size={"sm"}>
+          <Plus
+            size={24}
+            className="text-primary-text-dark dark:text-primary-text-light"
+          />
+        </Button>
+      </Link>
       {secondaryRoutes.map((route, index) => (
         <Link
           href={route.href}

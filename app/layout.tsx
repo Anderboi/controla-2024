@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from '@/components/ui/sonner';
 
 const font = Rubik({ subsets: ["cyrillic"] });
 
@@ -58,6 +59,7 @@ export default function RootLayout({
             min-h-dvh 
             bg-primary-bg-light
             dark:bg-primary-bg-dark
+            
             `,
             font.className
           )}
@@ -71,9 +73,9 @@ export default function RootLayout({
             <main
               className="
               px-2
-              pb-16
-              mb-2
-              space-y-2
+              pb-20
+              mb-1
+              /space-y-2
               //h-[calc(100dvh-80px)]
               grow
               overflow-y-scroll
@@ -84,6 +86,7 @@ export default function RootLayout({
               {children}
               {modal}
             </main>
+            <Toaster position='top-right' richColors/>
             <NavBar />
           </ThemeProvider>
         </body>

@@ -21,32 +21,33 @@ const ProjectsGallary = async ({
   const projects = await getProjectsByTitle(query);
 
   return (
-    <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
       {projects.map((project) => (
-        <Card key={project.project_id} className="overflow-hidden !p-0">
+        <Card key={project.project_id} className="overflow-hidden">
           <Link
             href={`/projects/${project.project_id} `}
             key={project.project_id}
           >
             <CardContent
               className="
-                aspect-video 
-                object-cover 
+                aspect-video
                 h-[180px] 
-                w-full 
-                overflow-hidden 
-                bg-accent-dark
+                w-full
                 p-0
                 "
             >
-              {/* <Image
-                alt="Project cover"
-                src="https://picsum.photos/200"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                objectFit="cover"
-                fill
-                className="w-full object-cover"
-              /> */}
+              <div className="relative block size-full overflow-hidden">
+                <Image
+                  alt="Project cover"
+                  src="https://picsum.photos/200"
+                  // width={600}
+                  // height={400}
+                  // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  objectFit="cover"
+                  fill
+                  className="w-full object-cover"
+                />
+              </div>
             </CardContent>
             <CardFooter className="block p-4">
               <CardTitle>{project.address_street}</CardTitle>
