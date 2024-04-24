@@ -15,23 +15,12 @@ const ContactsPage = ({
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
   return (
-    <>
-      <Header title="Контакты" />
-      <Search />
-      <ContainerBox
-        className="
-          h-full
-          space-y-4 grow
-          "
-      >
-        <Suspense
-          key={query + currentPage}
-          fallback={"<InvoicesTableSkeleton /> Insert skeleton"}
-        >
-          <ContactsGallary query={query} currentPage={currentPage} />
-        </Suspense>
-      </ContainerBox>
-    </>
+    <Suspense
+      key={query + currentPage}
+      fallback={"<InvoicesTableSkeleton /> Insert skeleton"}
+    >
+      <ContactsGallary query={query} currentPage={currentPage} />
+    </Suspense>
   );
 };
 

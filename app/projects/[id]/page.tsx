@@ -24,6 +24,7 @@ const page = async ({ params }: { params: { id: number } }) => {
           fallback={"<InvoicesTableSkeleton /> Insert skeleton"}
         >
           <p>Content</p>
+          <img alt='cover' src={project.cover_img as string}/>
         </Suspense>
       </ContainerBox>
     </>

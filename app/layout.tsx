@@ -8,6 +8,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from '@/components/ui/sonner';
+import { ruRU } from "@clerk/localizations";
 
 const font = Rubik({ subsets: ["cyrillic"] });
 
@@ -44,6 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider
+    localization={ruRU}
       appearance={{
         baseTheme: dark,
         variables: { colorPrimary: "#118A65" },

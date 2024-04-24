@@ -24,12 +24,12 @@ import {
   SelectValue,
 } from "./ui/select";
 import { DatePickerDemo } from "./ui/datepicker";
-import { supabase } from "@/lib/supabase/supabase";
 import { useAuth } from "@clerk/nextjs";
 import { createProject } from "@/app/actions";
 import { toast } from "sonner";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { createClerkSupabaseClient } from '@/lib/supabase/client';
 
 type Inputs = z.infer<typeof FormDataSchema>;
 
@@ -73,8 +73,9 @@ const steps = [
 const CreateProjectForm = () => {
   const [activeStep, setActiveStep] = useState(0);
   const { userId, sessionId, getToken } = useAuth();
-  console.log(userId, sessionId, getToken);
+  const supabase = createClerkSupabaseClient()
 
+  
   // const user = useAuth();
 
   const form = useForm<Inputs>({
@@ -107,6 +108,7 @@ const CreateProjectForm = () => {
   type FieldName = keyof Inputs;
 
   const fileRef = form.register("coverImageUrl");
+  const purposeRef = form.register("purpose");
 
   const nextStep = async () => {
     const fields = steps[activeStep].fields;
@@ -130,6 +132,12 @@ const CreateProjectForm = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (values) => {
+    console.log(userId);
+    
+    if(!userId) {
+      return {error: "Please sign In"}
+    }
+
     //* Upload projectImage if it exists
     const imageFile = values.coverImageUrl?.[0] || null;
 
@@ -151,15 +159,15 @@ const CreateProjectForm = () => {
     const streetAddress = `${values.street} ${values.house} / ${values.room}`;
 
     const { data: projectData, error: projectError } = await supabase
-      .from("projects")
+      .from("designprojects")
       .insert({
         user_id: userId,
         address_country: values.country,
         address_city: values.city,
         address_street: streetAddress,
-        area: values.area,
         cover_img: projectCoverUrl,
-        // client_id: values.client_id.value,
+        contract_id: values.contractId,
+        client_id: userId, //TODO change this 
       })
       .select()
       .single();
@@ -177,18 +185,8 @@ const CreateProjectForm = () => {
         storeys: values.storeys,
         residing: values.colivers,
         stage: 1,
-        contract_number: values.contractId,
+        area: values.area,
       });
-
-      // const { error: engeneeringError } = await supabase
-      //   .from("engeneering_data")
-      //   .insert({
-      //     project_id: projectData.project_id,
-      //     heating: null,
-      //     conditioning: null,
-      //     plumbing: null,
-      //     electric: null,
-      //   });
     }
 
     toast.success("Проект создан");
@@ -196,18 +194,7 @@ const CreateProjectForm = () => {
     redirect(`/projects/${projectId}`);
   };
 
-  // async function action(formData: FormData) {
-  //   console.log(formData.get("coverImageUrl"));
 
-  //   // const { error } = await createProject({
-  //   //   city: formData.get("city"),
-  //   //   country: formData.get("country"),
-  //   //   address_street: `${formData.get("street")} ${formData.get("house")}/${formData.get(
-  //   //     "room"
-  //   //   )}`,
-  //   //   area: formData.get("area"),
-  //   // });
-  // }
 
   return (
     <section>
@@ -391,7 +378,7 @@ const CreateProjectForm = () => {
                   <FormItem>
                     <FormLabel>Назначение</FormLabel>
                     <FormControl>
-                      <Select {...field}>
+                      <Select {...purposeRef}>
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="-" />
                         </SelectTrigger>
