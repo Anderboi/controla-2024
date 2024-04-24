@@ -1,12 +1,15 @@
 "use server";
 
+import { FormDataSchema } from "@/lib/formschema";
+import { createClient } from "@/lib/supabase/server";
 import { supabase } from "@/lib/supabase/supabase";
-import { Database } from '@/types/supabase';
 import { auth } from "@clerk/nextjs";
-import { decode } from "base64-arraybuffer";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+export type FormState = {
+  message: string;
+};
 export async function createContact(values: {
   name: string;
   email: string;
@@ -23,52 +26,77 @@ export async function createContact(values: {
   return { data, error };
 }
 export async function createProject(
-  values: Database["public"]["Tables"]["projects"]["Insert"]
-) {
-  //? Check if input values are provided
-  if (!values) {
-    return { error: "No values provided" };
-  }
+  prevState: FormState,
+  data: FormData
+): Promise<FormState> {
+  // const supabase = createClient();
+  const formData = Object.fromEntries(data);
+  const parsed = FormDataSchema.safeParse(formData);
 
+  //? Check if input values are provided
+  if (!parsed.success) {
+    return { message: "Не все поля заполнены" };
+  }
   //? Check if user is logged in
   const { userId } = auth();
   if (!userId) {
-    return { error: "User is not logged in" };
+    return { message: "Вы не вошли в аккаунт" };
+  }
+  //* Upload projectImage if it exists
+  const imageFile = parsed.data.coverImage || null;
+
+  const { data: imageData, error: imageError } = await supabase.storage
+    .from("projects")
+    .upload(`project-${Date.now()}`, imageFile as File, {
+      cacheControl: "3600",
+      upsert: false,
+    });
+
+  const path = imageData?.path;
+  const projectCoverUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/projects/${path}`;
+
+  // //? Если не удалось загрузить изображение, которое не обязательное к загрузке
+  if (imageError) {
+    return { message: "Не удалось загрузить изображение" };
   }
 
-  // //? Upload image to storage
-  // const image = values.cover_img;
-  // const imageName = image?.split("/").pop(); //TODO: fix this
-  // const { data, error } = await supabase.storage
-  //   .from(`projects/[${values.address_street}]`)
-  //   .upload(imageName, decode(image), {
-  //     contentType: "image/png",
-  //   });
-  // if (error) {
-  //   return { error: "Unable to upload the blog image to Storage." };
-  // }
+  const { data: projectData, error: projectError } = await supabase
+    .from("designprojects")
+    .insert([
+      {
+        user_id: userId,
+        address_country: parsed.data.address_country,
+        address_city: parsed.data.address_city,
+        address_street: `${parsed.data.street} ${parsed.data.house}/${parsed.data.room}`,
+        cover_img: projectCoverUrl,
+        contract_id: parsed.data.contractId,
+        client_id: userId,
+      },
+    ])
+    .select()
+    .single();
 
-  // const path = data?.path;
-  // const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/projects/${path}`;
+  if (projectError) {
+    return { message: "Can't retrieve designproject data" };
+  }
 
-  // const { data: project, error: projectError } = await supabase
-  //   .from("projects")
-  //   .insert({
-  //     address_country: values.address_country,
-  //     address_city: values.address_city,
-  //     address_street: streetAddress,
-  //     area: values.area,
-  //     cover_img: imageUrl || '',
-  //     client_id: values.client_id.value,
-  //   })
-  //   .select();
 
-  // if (projectError) {
-  //   return { error: "Unable to insert the blog into the database." };
-  // }
+  if (projectData) {
+    const { error: infoError } = await supabase.from("project_info").insert([
+      {
+        project_id: projectData.project_id,
+        purpose: parsed.data.purpose,
+        storeys: parsed.data.storeys,
+        residing: parsed.data.residing,
+        stage: 1,
+        area: parsed.data.area,
+      },
+    ]);
+    if (infoError) {
+      return { message: "Can't retrieve project info data" };
+    }
+  }
 
-  // const projectId = project?.[0]?.id;
-
-  // revalidatePath("/");
-  // redirect(`/projects/${projectId}`);
+  revalidatePath("/");
+  redirect(`/projects/${projectData.project_id}`);
 }

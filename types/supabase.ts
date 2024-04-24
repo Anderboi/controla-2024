@@ -81,6 +81,56 @@ export type Database = {
         }
         Relationships: []
       }
+      designprojects: {
+        Row: {
+          address_city: string | null
+          address_country: string | null
+          address_street: string | null
+          client_id: string | null
+          contract_id: string | null
+          cover_img: string | null
+          created_at: string | null
+          project_id: number
+          project_name: string | null
+          stage: number
+          user_id: string
+        }
+        Insert: {
+          address_city?: string | null
+          address_country?: string | null
+          address_street?: string | null
+          client_id?: string | null
+          contract_id?: string | null
+          cover_img?: string | null
+          created_at?: string | null
+          project_id?: number
+          project_name?: string | null
+          stage?: number
+          user_id?: string
+        }
+        Update: {
+          address_city?: string | null
+          address_country?: string | null
+          address_street?: string | null
+          client_id?: string | null
+          contract_id?: string | null
+          cover_img?: string | null
+          created_at?: string | null
+          project_id?: number
+          project_name?: string | null
+          stage?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "designprojects_stage_fkey"
+            columns: ["stage"]
+            isOneToOne: false
+            referencedRelation: "project_stages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       engeneering_data: {
         Row: {
           conditioning: string[] | null
@@ -220,7 +270,7 @@ export type Database = {
       }
       project_info: {
         Row: {
-          contract_number: number | null
+          area: number | null
           created_at: string | null
           project_id: number
           purpose: string | null
@@ -229,7 +279,7 @@ export type Database = {
           storeys: number
         }
         Insert: {
-          contract_number?: number | null
+          area?: number | null
           created_at?: string | null
           project_id?: number
           purpose?: string | null
@@ -238,7 +288,7 @@ export type Database = {
           storeys?: number
         }
         Update: {
-          contract_number?: number | null
+          area?: number | null
           created_at?: string | null
           project_id?: number
           purpose?: string | null
@@ -251,7 +301,7 @@ export type Database = {
             foreignKeyName: "project_info_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: true
-            referencedRelation: "projects"
+            referencedRelation: "designprojects"
             referencedColumns: ["project_id"]
           },
           {
@@ -293,6 +343,7 @@ export type Database = {
           project_id: number
           stage: number
           user_id: string | null
+          userId: string | null
         }
         Insert: {
           address_city?: string | null
@@ -305,6 +356,7 @@ export type Database = {
           project_id?: number
           stage?: number
           user_id?: string | null
+          userId?: string | null
         }
         Update: {
           address_city?: string | null
@@ -317,6 +369,7 @@ export type Database = {
           project_id?: number
           stage?: number
           user_id?: string | null
+          userId?: string | null
         }
         Relationships: [
           {
@@ -499,6 +552,7 @@ export type Database = {
           full_name: string | null
           id: string
           payment_method: Json | null
+          phone_number: string | null
           role: string | null
         }
         Insert: {
@@ -508,6 +562,7 @@ export type Database = {
           full_name?: string | null
           id: string
           payment_method?: Json | null
+          phone_number?: string | null
           role?: string | null
         }
         Update: {
@@ -517,6 +572,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           payment_method?: Json | null
+          phone_number?: string | null
           role?: string | null
         }
         Relationships: [
@@ -569,7 +625,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      requesting_user_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

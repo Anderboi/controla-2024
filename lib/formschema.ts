@@ -2,9 +2,9 @@ import { z } from "zod";
 
 export const FormDataSchema = z.object({
   //? Project Info
-  projectName: z.string().optional(),
-  contractId: z.string().optional(),
-  coverImageUrl:
+  projectName: z.string().trim().optional(),
+  contractId: z.string().trim().optional(),
+  coverImage:
     typeof window === "undefined"
       ? z.any().optional()
       : z.instanceof(FileList).optional(),
@@ -23,16 +23,16 @@ export const FormDataSchema = z.object({
   // gender: z.any().optional(),
 
   //? Project Address
-  country: z.string(),
-  city: z.string(),
-  street: z.string(),
+  address_country: z.string().trim(),
+  address_city: z.string().trim(),
+  street: z.string().trim(),
   house: z.coerce.number().optional(),
   room: z.coerce.number().optional(),
 
   // ? Project Info
   purpose: z.string().optional(),
   area: z.coerce.number().int().gte(1, "Площадь должна быть больше нуля"),
-  colivers: z.coerce.number().int().positive().optional(),
+  residing: z.coerce.number().int().positive().optional(),
   storeys: z.coerce.number().int().positive(),
   estBudget: z.coerce.number().int().positive().optional(),
   startDate: z.date().optional(),

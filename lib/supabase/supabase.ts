@@ -6,7 +6,7 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export async function getProjects(): Promise<Database["public"]["Tables"]["projects"]["Row"][]> {
+export async function getProjects(): Promise<Database["public"]["Tables"]["designprojects"]["Row"][]> {
   // const { data: sessionData, error: sessionError } =
   //   await supabase.auth.getSession();
 
@@ -17,7 +17,7 @@ export async function getProjects(): Promise<Database["public"]["Tables"]["proje
   // }
 
   const { data, error } = await supabase
-    .from("projects")
+    .from("designprojects")
     .select("*")
     // .eq("user_id", sessionData.session?.user.id)
     // .or(
@@ -34,7 +34,7 @@ export async function getProjects(): Promise<Database["public"]["Tables"]["proje
 
 export async function getProjectsByTitle(
   title: string
-): Promise<Database["public"]["Tables"]["projects"]["Row"][]> {
+): Promise<Database["public"]["Tables"]["designprojects"]["Row"][]> {
   if (!title) {
     const allProjects = await getProjects();
     return allProjects;
@@ -50,7 +50,7 @@ export async function getProjectsByTitle(
   // }
 
   const { data, error } = await supabase
-    .from("projects")
+    .from("designprojects")
     .select()
     // .eq("user_id", sessionData.session?.user.id)
     // .or(
@@ -66,12 +66,12 @@ export async function getProjectsByTitle(
   return (data as any) || [];
 }
 
-export async function getCurrntProject (
+export async function getCurrentProject (
   id: number
-): Promise<Database["public"]["Tables"]["projects"]["Row"]> {
+): Promise<Database["public"]["Tables"]["designprojects"]["Row"]> {
 
   const { data, error } = await supabase
-    .from("projects")
+    .from("designprojects")
     .select("*")
     .eq("project_id", id)
     .single();

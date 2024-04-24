@@ -1,11 +1,11 @@
 import React, { Suspense } from "react";
 import ContainerBox from "@/components/layout/ContainerBox";
 import Header from "@/components/layout/Header";
-import { getCurrntProject } from "@/lib/supabase/supabase";
+import { getCurrentProject } from "@/lib/supabase/supabase";
 import { formatDate } from '@/lib/utils';
 
 const page = async ({ params }: { params: { id: number } }) => {
-  const project = await getCurrntProject(params.id);
+  const project = await getCurrentProject(params.id);
 
   return (
     <>
