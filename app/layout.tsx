@@ -4,11 +4,8 @@ import { Inter, Comfortaa, IBM_Plex_Sans, Rubik } from "next/font/google";
 import "./globals.css";
 import NavBar from "../components/layout/NavBar";
 import { twMerge } from "tailwind-merge";
-import { ClerkProvider } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from '@/components/ui/sonner';
-import { ruRU } from "@clerk/localizations";
+import { Toaster } from "@/components/ui/sonner";
 
 const font = Rubik({ subsets: ["cyrillic"] });
 
@@ -44,18 +41,10 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-    localization={ruRU}
-      appearance={{
-        baseTheme: dark,
-        variables: { colorPrimary: "#118A65" },
-        layout: { socialButtonsVariant: "iconButton" },
-      }}
-    >
-      <html lang="ru" className="h-full">
-        <body
-          className={twMerge(
-            `
+    <html lang="ru" className="h-full">
+      <body
+        className={twMerge(
+          `
             flex 
             flex-col 
             min-h-dvh 
@@ -63,17 +52,17 @@ export default function RootLayout({
             dark:bg-primary-bg-dark
             
             `,
-            font.className
-          )}
+          font.className
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <main
-              className="
+          <main
+            className="
               px-2
               pb-20
               mb-1
@@ -84,15 +73,14 @@ export default function RootLayout({
               flex
               flex-col
             "
-            >
-              {children}
-              {modal}
-            </main>
-            <Toaster position='top-right' richColors/>
-            <NavBar />
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+          >
+            {children}
+            {modal}
+          </main>
+          <Toaster position="top-right" richColors />
+          <NavBar />
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

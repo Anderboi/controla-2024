@@ -1,9 +1,7 @@
 "use server";
 
 import { FormDataSchema } from "@/lib/formschema";
-import { createClient } from "@/lib/supabase/server";
 import { supabase } from "@/lib/supabase/supabase";
-import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -37,11 +35,8 @@ export async function createProject(
   if (!parsed.success) {
     return { message: "Не все поля заполнены" };
   }
-  //? Check if user is logged in
-  const { userId } = auth();
-  if (!userId) {
-    return { message: "Вы не вошли в аккаунт" };
-  }
+  //TODO Check if user is logged in
+
   //* Upload projectImage if it exists
   const imageFile = parsed.data.coverImage || null;
 
@@ -64,13 +59,13 @@ export async function createProject(
     .from("designprojects")
     .insert([
       {
-        user_id: userId,
+        user_id: 'userId',
         address_country: parsed.data.address_country,
         address_city: parsed.data.address_city,
         address_street: `${parsed.data.street} ${parsed.data.house}/${parsed.data.room}`,
         cover_img: projectCoverUrl,
         contract_id: parsed.data.contractId,
-        client_id: userId,
+        client_id: 'userId',
       },
     ])
     .select()
