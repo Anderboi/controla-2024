@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+const plugin = require("tailwindcss/plugin");
 
 const config = {
   darkMode: "class",
@@ -21,7 +22,7 @@ const config = {
       colors: {
         transparent: "transparent",
         current: "currentColor",
-        white:  "#fff" ,
+        white: "#fff",
         black: "#000",
         "primary-bg": { dark: "#000", light: "#F7F7F7" },
         "secondary-bg": { dark: "#1c1c1e", light: "#FFFFFF" },
@@ -57,7 +58,21 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    plugin(function ({ addUtilities }: { addUtilities: any }) {
+      addUtilities({
+        ".no-scrollbar::-webkit-scrollbar": {
+          display: "none",
+        },
+        ".no-scrollbar": {
+          "-ms-overflow-style": "none" /* IE and Edge */,
+          "scrollbar-width": "none" /* Firefox */,
+        },
+        ".scrolling-touch": { "-webkit-overflow-scrolling": "touch" },
+      });
+    }),
+    require("tailwindcss-animate"),
+  ],
 } satisfies Config;
 
 export default config;

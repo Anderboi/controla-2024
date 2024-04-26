@@ -36,12 +36,14 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
   modal,
+  login,
 }: Readonly<{
   children: React.ReactNode;
   modal: React.ReactNode;
+  login: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className="h-full">
+    <html lang="ru" >
       <body
         className={twMerge(
           `
@@ -50,7 +52,7 @@ export default function RootLayout({
             min-h-dvh 
             bg-primary-bg-light
             dark:bg-primary-bg-dark
-            
+            max-sm:no-scrollbar
             `,
           font.className
         )}
@@ -74,6 +76,7 @@ export default function RootLayout({
               flex-col
             "
           >
+            {/* {user !==null ? children : login} */}
             {children}
             {modal}
           </main>

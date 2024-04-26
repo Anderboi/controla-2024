@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import CreateProjectForm from "@/components/create-project-form";
+import CreateProjectForm from "@/components/createProjectForm";
 import {
   Dialog,
   DialogClose,

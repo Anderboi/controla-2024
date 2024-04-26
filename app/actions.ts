@@ -46,7 +46,6 @@ export async function createProject(
       cacheControl: "3600",
       upsert: false,
     });
-
   const path = imageData?.path;
   const projectCoverUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/projects/${path}`;
 
@@ -54,18 +53,17 @@ export async function createProject(
   if (imageError) {
     return { message: "Не удалось загрузить изображение" };
   }
-
   const { data: projectData, error: projectError } = await supabase
     .from("designprojects")
     .insert([
       {
-        user_id: 'userId',
+        user_id: "userId",
         address_country: parsed.data.address_country,
         address_city: parsed.data.address_city,
         address_street: `${parsed.data.street} ${parsed.data.house}/${parsed.data.room}`,
         cover_img: projectCoverUrl,
         contract_id: parsed.data.contractId,
-        client_id: 'userId',
+        client_id: "userId",
       },
     ])
     .select()
@@ -74,7 +72,6 @@ export async function createProject(
   if (projectError) {
     return { message: "Can't retrieve designproject data" };
   }
-
 
   if (projectData) {
     const { error: infoError } = await supabase.from("project_info").insert([
@@ -94,4 +91,46 @@ export async function createProject(
 
   revalidatePath("/");
   redirect(`/projects/${projectData.project_id}`);
+}
+
+//? AUTH BLOCK
+export async function emailLogin(formData: FormData) {
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  };
+
+  const { error } = await supabase.auth.signInWithPassword(data);
+
+  if (error) {
+    redirect("/login?message=Could not authenticate user");
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/");
+}
+
+export async function signup(formData: FormData) {
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  };
+
+  const { error } = await supabase.auth.signUp(data);
+
+  if (error) {
+    redirect("/login?message=Could not sign up user");
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/login");
+}
+
+export async function signOut() {
+  await supabase.auth.signOut();
+  redirect("/login");
 }

@@ -1,10 +1,10 @@
-import CreateProjectForm from "@/components/create-project-form";
+import CreateProjectForm from "@/components/createProjectForm";
 import Header from "@/components/layout/Header";
 import React from "react";
 
 const CreateProjectPage = () => {
   return (
-    <article className='space-y-2'>
+    <article className="space-y-2">
       <Header title="Создание проекта" />
       <section
         className="
