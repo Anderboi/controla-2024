@@ -43,7 +43,7 @@ const ProjectsGallary = async ({
                   // width={600}
                   // height={400}
                   // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  objectFit="cover"
+                  // objectFit="cover"
                   fill
                   className="w-full object-cover"
                 />

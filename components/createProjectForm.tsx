@@ -188,7 +188,7 @@ const CreateProjectForm = () => {
   // }
 
   return (
-    <article className="overflow-y-scroll">
+    <section className="overflow-y-scroll">
       <Form {...form}>
         {state?.message !== '' && <FormMessage className='text-red-600'>{state.message}</FormMessage>}
         <form
@@ -196,8 +196,8 @@ const CreateProjectForm = () => {
           action={formAction}
           className="space-y-4 "
         >
-          {/* {activeStep === 0 && ( */}
-          <section className="space-y-4 ">
+          {activeStep === 0 && (
+          <article className="space-y-4 ">
             <h2 className="max-w-[900px] pb-2 text-2xl font-bold">
               Информация о проекте
             </h2>
@@ -251,10 +251,10 @@ const CreateProjectForm = () => {
                 </FormItem>
               )}
             />
-            {/* </section>
+            </article>
           )}
           {activeStep === 1 && (
-            <article className="space-y-4"> */}
+            <article className="space-y-4">
             <h2 className="max-w-[900px] pb-2 text-2xl font-bold">
               Адрес объекта
             </h2>
@@ -330,10 +330,10 @@ const CreateProjectForm = () => {
                 )}
               />
             </div>
-            {/* </article>
+            </article>
           )}
           {activeStep === 2 && (
-            <article className="space-y-4"> */}
+            <article className="space-y-4">
             <h2 className="max-w-[900px] pb-2 text-xl font-bold">
               Общая информация
             </h2>
@@ -432,24 +432,24 @@ const CreateProjectForm = () => {
               />
             </div>
             {/* </article> */}
-          </section>
-          {/* )} */}
+          </article>
+          )}
 
           <div className="flex justify-between w-full">
             <Button variant={"ghost"} onClick={() => prevStep()}>
               Назад
             </Button>
-            {/* {activeStep < steps.length - 1 ? (
+            {activeStep < steps.length - 1 ? (
               <div>
                 <Button onClick={nextStep}>Далее</Button>
               </div>
-            ) : ( */}
+            ) : (
             <Button type="submit">{pending ? "..." : "Создать"}</Button>
-            {/* )} */}
+            )}
           </div>
         </form>
       </Form>
-    </article>
+    </section>
   );
 };
 

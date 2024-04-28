@@ -1,12 +1,11 @@
 import React from "react";
-import { UserButton, SignedIn, SignedOut, SignInButton, UserProfile } from "@clerk/nextjs";
 import { Button } from '@/components/ui/button';
 
 const SettingsPage = () => {
   return (
     <>
       Settings block
-      <SignedIn>
+      {/* <SignedIn>
         <UserButton afterSignOutUrl="/" />
       </SignedIn>
       <SignedOut>
@@ -15,9 +14,9 @@ const SettingsPage = () => {
         </SignInButton>
       </SignedOut>
       <div className='max-sm:hidden'>
-      <UserProfile/>
+      <UserProfile/> */}
 
-      </div>
+      {/* </div> */}
       {/* <ModeToggle /> */}
       {/* <SignOutBlock /> */}
     </>

@@ -1,8 +1,9 @@
 "use server";
 
 import { FormDataSchema } from "@/lib/formschema";
-import { supabase } from "@/lib/supabase/supabase";
+import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export type FormState = {
@@ -13,6 +14,7 @@ export async function createContact(values: {
   email: string;
   phone: string;
 }) {
+  const supabase = createClient();
   const { data, error } = await supabase
     .from("users")
     .insert({
@@ -27,7 +29,7 @@ export async function createProject(
   prevState: FormState,
   data: FormData
 ): Promise<FormState> {
-  // const supabase = createClient();
+  const supabase = createClient();
   const formData = Object.fromEntries(data);
   const parsed = FormDataSchema.safeParse(formData);
 
@@ -94,43 +96,69 @@ export async function createProject(
 }
 
 //? AUTH BLOCK
-export async function emailLogin(formData: FormData) {
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
+export async function signIn(formData: FormData) {
+  "use server";
+  const supabase = await createClient();
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
 
-  const { error } = await supabase.auth.signInWithPassword(data);
-
-  if (error) {
-    redirect("/login?message=Could not authenticate user");
-  }
-
-  revalidatePath("/", "layout");
-  redirect("/");
-}
-
-export async function signup(formData: FormData) {
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
-
-  const { error } = await supabase.auth.signUp(data);
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
   if (error) {
-    redirect("/login?message=Could not sign up user");
-  }
+    console.log(error.message);
 
-  revalidatePath("/", "layout");
-  redirect("/login");
+    return redirect("/login?message=Could not authenticate user");
+  }
+  return redirect("/");
 }
 
+export async function signInWithOAuth() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      queryParams: {
+        access_type: "offline",
+        prompt: "consent",
+      },
+      redirectTo: "/auth/callback",
+    },
+  });
+
+  if (data.url) {
+    redirect(data.url); // use the redirect API for your server framework
+  }
+}
+
+export async function signUp(formData: FormData) {
+  "use server";
+
+  const origin = headers().get("origin");
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const supabase = createClient();
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    console.log(error.message);
+    return redirect("/login?message=Could not authenticate user");
+  }
+
+  return redirect("/login?message=Check email to continue sign in process");
+}
 export async function signOut() {
+  const supabase = createClient();
   await supabase.auth.signOut();
   redirect("/login");
 }

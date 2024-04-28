@@ -4,12 +4,17 @@ import { Inter, Comfortaa, IBM_Plex_Sans, Rubik } from "next/font/google";
 import "./globals.css";
 import NavBar from "../components/layout/NavBar";
 import { twMerge } from "tailwind-merge";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 const font = Rubik({ subsets: ["cyrillic"] });
 
+const defaultUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(defaultUrl),
   title: "Controla",
   description: "App for your interior design projects control",
   keywords: [
@@ -68,8 +73,6 @@ export default function RootLayout({
               px-2
               pb-20
               mb-1
-              /space-y-2
-              //h-[calc(100dvh-80px)]
               grow
               overflow-y-scroll
               flex

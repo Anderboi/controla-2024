@@ -7,19 +7,19 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export async function getProjects(): Promise<Database["public"]["Tables"]["designprojects"]["Row"][]> {
-  // const { data: sessionData, error: sessionError } =
-  //   await supabase.auth.getSession();
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.getSession();
 
-  // if (sessionError) {
-  //   console.log(sessionError.message);
+  if (sessionError) {
+    console.log(sessionError.message);
 
-  //   return [];
-  // }
+    return [];
+  }
 
   const { data, error } = await supabase
-    .from("designprojects")
+    .from("projects")
     .select("*")
-    // .eq("user_id", sessionData.session?.user.id)
+    .eq("user_id", sessionData.session?.user.id)
     // .or(
     //   `user_id.eq.${sessionData.session?.user.id},client_id.eq.${sessionData.session?.user.id}`
     // )
@@ -40,19 +40,19 @@ export async function getProjectsByTitle(
     return allProjects;
   }
 
-  // const { data: sessionData, error: sessionError } =
-  //   await supabase.auth.getSession();
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.getSession();
 
-  // if (sessionError) {
-  //   console.log(sessionError.message);
+  if (sessionError) {
+    console.log(sessionError.message);
 
-  //   return [];
-  // }
+    return [];
+  }
 
   const { data, error } = await supabase
-    .from("designprojects")
+    .from("projects")
     .select()
-    // .eq("user_id", sessionData.session?.user.id)
+    .eq("user_id", sessionData.session?.user.id)
     // .or(
     //   `user_id.eq.${sessionData.session?.user.id},client_id.eq.${sessionData.session?.user.id}`
     // )
@@ -71,7 +71,7 @@ export async function getCurrentProject (
 ): Promise<Database["public"]["Tables"]["designprojects"]["Row"]> {
 
   const { data, error } = await supabase
-    .from("designprojects")
+    .from("projects")
     .select("*")
     .eq("project_id", id)
     .single();
